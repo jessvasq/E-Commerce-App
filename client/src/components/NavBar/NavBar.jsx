@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 //Icons
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SearchIcon from '@mui/icons-material/Search';
@@ -6,9 +6,13 @@ import LoginIcon from '@mui/icons-material/Login';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Link } from 'react-router-dom';
-import './NavBar.scss'
+import './NavBar.scss';
+import Cart from '../Cart/Cart';
 
 const NavBar = () => {
+
+  const [open, setOpen] = useState(false)
+
   return (
     <div className='navbar'>
         <div className="wrapper">
@@ -53,7 +57,8 @@ const NavBar = () => {
                   <SearchIcon />
                   <FavoriteIcon />
                   <LoginIcon />
-                  <div className="cartIcon">
+                  {/* if it's true, it'll be false  */}
+                  <div className="cartIcon" onClick={()=>setOpen(!open)}>
                     <ShoppingCartIcon />
                     <span>0</span>
                   </div>
@@ -63,7 +68,8 @@ const NavBar = () => {
             </div>
    
         </div>
-        
+        {/* if it's open, show the cart */}
+        {open && <Cart/>}
   
     </div>
   )
