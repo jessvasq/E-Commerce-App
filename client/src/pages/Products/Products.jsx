@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './Products.scss';
 import List from '../../components/List/List';
-import { useParams } from 'react-router-dom';
+import { useFetcher, useParams } from 'react-router-dom';
+import useFetch from '../../hooks/useFetch';
 
 const Products = () => {
 
@@ -9,6 +10,8 @@ const Products = () => {
   console.log(categoryId)
   const [maxPrice, setMaxPrice] = useState(1000)
   const [sort, setSort] = useState(null)
+  const { data, loading, error } = useFetch(`/sub-categories?/[filters][categories][id][$eq]=${categoryId}`)
+  console.log(data)
 
   return (
     <div className='products'>
