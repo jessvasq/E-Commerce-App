@@ -10,19 +10,31 @@ const Products = () => {
   console.log(categoryId)
   const [maxPrice, setMaxPrice] = useState(1000)
   const [sort, setSort] = useState(null)
-  const { data, loading, error } = useFetch(`/sub-categories?/[filters][categories][id][$eq]=${categoryId}`)
-  console.log(data)
+  const [selectedSubCats, setSelectedSubCats] = useState([])
+
+  const { data, loading, error } = useFetch(`/sub-categories?[filters][categories][id][$eq]=${categoryId}`)
+
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    const isChecked = e.target.checked
+
+    setSelectedSubCats(isChecked ? [...selectedSubCats, value] : selectedSubCats.filter((item) => item !== value ))
+  };
+
+  console.log(selectedSubCats)
 
   return (
     <div className='products'>
       <div className="left">
         <div className="filterItem">
           <h2>Product Categories</h2>
-          <div className="inputItem">
-            <input type="checkbox" id='1' value={1}/>
-            <label htmlFor='1'>Ceramics</label>
+          {data?.map((item) => (
+          <div className="inputItem" key={item.id}>
+            <input type="checkbox" id={item.id} value={item.id} onChange={handleChange}/>
+            <label htmlFor={item.id}>{item.attributes.title}</label>
           </div>
-
+          ))}
           <div className="inputItem">
             <input type="checkbox" id='2' value={2}/>
             <label htmlFor='2'>Glassware</label>
@@ -58,7 +70,7 @@ const Products = () => {
       </div>
       <div className="right">
         <img className= 'categoryImg' src="https://images.pexels.com/photos/6694692/pexels-photo-6694692.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" />
-      <List categoryId={categoryId} maxPrice={maxPrice} sort={sort} />
+      <List categoryId={categoryId} maxPrice={maxPrice} sort={sort} subCats={selectedSubCats}/>
       </div>
     </div>
   )
